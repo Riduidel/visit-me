@@ -40,7 +40,7 @@ public class Farm {
 		A a = new A();
 		B b = new B();
 
-		Visitable truc = a;
+		Visitable truc = b;
 		
 		truc.accept(new Visitor() {
 			
@@ -52,6 +52,19 @@ public class Farm {
 			@Override
 			public void visitA(A a) {
 				a.do_this();
+			}
+		});
+		
+		truc.accept(new Visitor() {
+			
+			@Override
+			public void visitB(B b) {
+				b.do_another_thing();
+			}
+			
+			@Override
+			public void visitA(A a) {
+				throw new UnsupportedOperationException("not in A");
 			}
 		});
 	}
