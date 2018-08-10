@@ -18,6 +18,10 @@ class B implements Interface{
 		System.out.println("B do that");
 	}
 	
+	public void do_another_thing() {
+		System.out.println("Wayyy harder");
+	}
+	
 	@Override
 	public void do_it() {
 		do_that();
@@ -32,6 +36,12 @@ public class Farm {
 
 		Interface truc = a;
 		truc.do_it();
+		if (truc instanceof B) {
+			B newb = (B) truc;
+			newb.do_another_thing();
+		} else {
+			throw new UnsupportedOperationException("Ca marche pas");
+		}
 	}
 
 }
