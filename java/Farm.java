@@ -3,6 +3,8 @@ interface Visitor {
 	void visitA(A a);
 
 	void visitB(B b);
+
+	void visitC(C c);
 	
 }
 interface Visitable {
@@ -34,13 +36,25 @@ class B implements Visitable{
 	}
 }
 
+class C implements Visitable {
+	public void do_different() {
+		System.out.println("do differently");
+	}
+
+	@Override
+	public void accept(Visitor visitor) {
+		visitor.visitC(this);
+	}
+}
+
 public class Farm {
 
 	public static void main(String[] args) {
 		A a = new A();
 		B b = new B();
+		C c = new C();
 
-		Visitable truc = b;
+		Visitable truc = c;
 		
 		truc.accept(new Visitor() {
 			
@@ -52,6 +66,11 @@ public class Farm {
 			@Override
 			public void visitA(A a) {
 				a.do_this();
+			}
+
+			@Override
+			public void visitC(C c) {
+				c.do_different();
 			}
 		});
 		
@@ -65,6 +84,11 @@ public class Farm {
 			@Override
 			public void visitA(A a) {
 				throw new UnsupportedOperationException("not in A");
+			}
+
+			@Override
+			public void visitC(C c) {
+				throw new UnsupportedOperationException("not in C");
 			}
 		});
 	}
