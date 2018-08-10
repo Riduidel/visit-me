@@ -1,19 +1,25 @@
-interface Interface {
-	void do_it();
+interface Visitor {
+
+	void visitA(A a);
+
+	void visitB(B b);
+	
 }
-class A implements Interface{
+interface Visitable {
+	void accept(Visitor visitor);
+}
+class A implements Visitable{
 	public void do_this() {
 		System.out.println("A do this");
 	}
 
 	@Override
-	public void do_it() {
-		do_this();
+	public void accept(Visitor visitor) {
+		visitor.visitA(this);
 	}
 	
-	
 }
-class B implements Interface{
+class B implements Visitable{
 	public void do_that() {
 		System.out.println("B do that");
 	}
@@ -21,10 +27,10 @@ class B implements Interface{
 	public void do_another_thing() {
 		System.out.println("Wayyy harder");
 	}
-	
+
 	@Override
-	public void do_it() {
-		do_that();
+	public void accept(Visitor visitor) {
+		visitor.visitB(this);
 	}
 }
 
@@ -34,14 +40,20 @@ public class Farm {
 		A a = new A();
 		B b = new B();
 
-		Interface truc = a;
-		truc.do_it();
-		if (truc instanceof B) {
-			B newb = (B) truc;
-			newb.do_another_thing();
-		} else {
-			throw new UnsupportedOperationException("Ca marche pas");
-		}
+		Visitable truc = a;
+		
+		truc.accept(new Visitor() {
+			
+			@Override
+			public void visitB(B b) {
+				b.do_that();
+			}
+			
+			@Override
+			public void visitA(A a) {
+				a.do_this();
+			}
+		});
 	}
 
 }
